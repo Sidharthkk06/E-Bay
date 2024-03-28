@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic import View, ListView
-from seller.models import SellerProfile, Product
+from seller.models import SellerProfile, SellerProduct
 from django.contrib.auth.forms import UserCreationForm
 from seller.forms import SignInForm
 
@@ -41,21 +41,11 @@ class SignInView(View):
     
 class HomeView(View):
     def get(self, request):
-        seller_name = None
         if request.user.is_authenticated:
             seller_name = request.user.username
         return render(request, 'seller/profile.html', {'seller_name': seller_name})
     
 class ProductsView(ListView):
-    model = Product
+    model = SellerProduct
     template_name = 'seller/products.html'
     context_object_name = 'products'
-
-    def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('login')  # Redirect to login page if user is not authenticated
-        else:
-            return super().get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        return Product.objects.filter(seller__user=self.request.user)

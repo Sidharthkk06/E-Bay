@@ -1,5 +1,5 @@
 from django import forms
-from buyer.models import Product
+from seller.models import SellerProduct
 
 class SignInForm(forms.Form):
     username = forms.CharField(max_length=150)
@@ -8,5 +8,5 @@ class SignInForm(forms.Form):
 
 class ProductForm(forms.ModelForm):
     class Meta:
-        model = Product
-        fields = ['product_name', 'product_description', 'starting_bid', 'end_time', 'image']
+        model = SellerProduct
+        fields = ['name','seller','description','price','current_bid','image']
